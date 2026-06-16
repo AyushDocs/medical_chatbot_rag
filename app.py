@@ -8,7 +8,8 @@ qa_chain = None
 
 def init():
     global qa_chain
-    if not os.path.exists("models/index.faiss"):
+    faiss_path = os.getenv("FAISS_PATH", "models")
+    if not os.path.exists(os.path.join(faiss_path, "index.faiss")):
         return
     qa_chain = get_qa_chain()
 

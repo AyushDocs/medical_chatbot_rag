@@ -6,7 +6,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
 
 DATA_PATH = "data/medical book.pdf"
-FAISS_PATH = "models"
+FAISS_PATH = os.getenv("FAISS_PATH", "models")
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 

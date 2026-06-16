@@ -5,7 +5,7 @@ from src.prompt import prompt_template
 from langchain_core.prompts import PromptTemplate
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-FAISS_PATH = "models"
+FAISS_PATH = os.getenv("FAISS_PATH", "models")
 MODEL_NAME = "google/flan-t5-base"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

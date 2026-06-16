@@ -7,7 +7,8 @@ qa_chain = None
 
 def init():
     global qa_chain
-    if os.path.exists("models/index.faiss"):
+    faiss_path = os.getenv("FAISS_PATH", "models")
+    if os.path.exists(os.path.join(faiss_path, "index.faiss")):
         qa_chain = get_qa_chain()
         return "Model loaded! Ask me anything."
     return "No FAISS index found. Please upload a PDF first."
