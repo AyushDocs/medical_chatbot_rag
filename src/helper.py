@@ -6,7 +6,7 @@ from src.prompt import prompt_template
 from langchain_core.prompts import PromptTemplate
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
-FAISS_PATH = os.getenv("FAISS_PATH", "models")
+FAISS_PATH = "models"
 MODEL_NAME = "google/flan-t5-base"
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -14,12 +14,13 @@ DTYPE = torch.float16 if DEVICE == "cuda" else torch.float32
 
 
 def load_vector_store():
+    faiss_path = os.environ.get("FAISS_PATH", FAISS_PATH)
     embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2",
         model_kwargs={"device": DEVICE},
     )
     vector_store = FAISS.load_local(
-        FAISS_PATH, embeddings, allow_dangerous_deserialization=True
+        faiss_path, embeddings, allow_dangerous_deserialization=True
     )
     return vector_store
 
