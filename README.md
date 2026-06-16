@@ -1,3 +1,15 @@
+---
+title: Medical Chatbot
+emoji: 🩺
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: 5.44.1
+app_file: app_gradio.py
+pinned: false
+license: mit
+---
+
 # Medical Chatbot with RAG
 
 A Retrieval-Augmented Generation (RAG) chatbot that answers medical questions using LangChain + FAISS.
