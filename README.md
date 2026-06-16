@@ -14,6 +14,8 @@ license: mit
 
 A Retrieval-Augmented Generation (RAG) chatbot that answers medical questions using LangChain + FAISS.
 
+**[Live Demo](https://huggingface.co/spaces/AyushDocs/medical_chatbot_rag)**
+
 ## How It Works
 
 1. **PDF → Chunks** — Medical PDF is split into ~500-char chunks
