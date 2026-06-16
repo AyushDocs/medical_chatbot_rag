@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+models/
+vectorstore/
+data/
+*.egg-info/
+dist/
+build/
+.env
+*.pdf

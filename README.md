@@ -1,41 +1,64 @@
-# 🩺 Medical Chatbot with LangChain 🧠
+# Medical Chatbot with RAG
 
-Welcome to the Medical Chatbot project! This application leverages LangChain to build a Retrieval-Augmented Generation (RAG) system that answers user queries related to medical information. 🌟
+A Retrieval-Augmented Generation (RAG) chatbot that answers medical questions using LangChain + FAISS.
 
-## 📚 Overview
+## How It Works
 
-This chatbot is designed to provide accurate and helpful responses to medical questions by combining the power of language models with a retrieval system. The RAG approach ensures that the chatbot can access and utilize a vast amount of medical knowledge efficiently. 🏥
+1. **PDF → Chunks** — Medical PDF is split into ~500-char chunks
+2. **Chunks → Embeddings** — Each chunk is embedded with `all-MiniLM-L6-v2`
+3. **Embeddings → FAISS Index** — Stored for fast similarity search
+4. **Query → Retrieve → Generate** — User question retrieves top-4 chunks, LLM generates answer
 
-## 🚀 Features
+## Quick Start
 
-- **Natural Language Understanding**: Understands and processes user queries in natural language.
-- **Retrieval-Augmented Generation**: Combines retrieval of relevant documents with generation of accurate responses.
-- **Scalable and Efficient**: Designed to handle a large volume of queries with high accuracy.
+### Option 1: Google Colab (Recommended)
+Open `medical_chatbot_colab.ipynb` in Colab — runs the full pipeline on GPU.
 
-## 🛠️ Installation
+### Option 2: Local
+```bash
+# Clone
+git clone https://github.com/AyushDocs/medical_chatbot_rag.git
+cd medical_chatbot_rag
 
-To get started with the Medical Chatbot, follow these steps:
+# Install
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
-1. **Clone the repository**:
-    ```sh
-    git clone https://github.com/yourusername/medical_chatbot_rag.git
-    cd medical_chatbot_rag
-    ```
+# Build FAISS index (run once)
+# Place your PDF in data/medical book.pdf first
+python store_index.py
 
-2. **Create a virtual environment**:
-    ```sh
-    python -m venv .venv
-    source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
-    ```
+# Run the app
+python app.py
+```
+Open http://localhost:8000
 
-3. **Install the dependencies**:
-    ```sh
-    pip install -r requirements.txt
-    ```
+## Project Structure
 
-## 🏃 Usage
+```
+├── app.py                  # Flask web server
+├── store_index.py          # Builds FAISS index from PDF
+├── src/
+│   ├── helper.py           # QA chain (retrieval + LLM)
+│   └── prompt.py           # Prompt template
+├── templates/
+│   └── chat.html           # Frontend UI
+├── models/                 # FAISS index (generated, not in repo)
+├── data/                   # PDF files (generated, not in repo)
+└── medical_chatbot_colab.ipynb  # Colab notebook
+```
 
-To run the chatbot, execute the following command:
+## Models
 
-```sh
-python [app.py](http://_vscodecontentref_/0)
+| Component | Model | Size |
+|-----------|-------|------|
+| Embeddings | `sentence-transformers/all-MiniLM-L6-v2` | 80MB |
+| LLM | `google/flan-t5-base` | ~250M params |
+
+> **Note:** `flan-t5-base` is small and may produce low-quality answers. Consider upgrading to a larger model or using an API (OpenAI/Gemini) for production use.
+
+## Requirements
+
+- Python 3.10+
+- See `requirements.txt` for dependencies
